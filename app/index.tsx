@@ -10,11 +10,9 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-      <Link href={"/home" as Href} asChild>
-        <Pressable>
-          <Text>Home</Text>
-        </Pressable>
+      <Text>You are in index</Text>
+      <Link href="/home">
+        <Text>Go to Home</Text>
       </Link>
     </View>
   );
