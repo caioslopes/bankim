@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0044cc" />
+    <link rel="manifest" href="manifest.json" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Bankim</title>
+  </head>
+  <body>
+    <main class="container">
+      <section class="salary-card">
+        <span class="salary-label">R$</span>
+        <span id="salary-value" contenteditable="false">0</span>
+        <button id="edit-salary" aria-label="Editar salário">✏️</button>
+      </section>
+
+      <div id="uploadSection" class="card">
+        <h2>📂 Carregar Fatura (CSV)</h2>
+
+        <form id="csvForm">
+          <div class="form-group">
+            <label for="csvMonth">Mês da Fatura:</label>
+            <input type="month" id="csvMonth" required />
+          </div>
+
+          <div class="form-group">
+            <label for="csvInput">Arquivo CSV:</label>
+            <input type="file" id="csvInput" accept=".csv" required />
+            <small
+              >Formato esperado: Data, Lançamento, Categoria, Tipo, Valor
+              (separado por TAB ou ponto e vírgula)</small
+            >
+          </div>
+
+          <button type="submit">📤 Enviar CSV</button>
+        </form>
+      </div>
+
+      <section class="form-card">
+        <h3>Adicionar Conta</h3>
+        <form id="future-expenses-form">
+          <div class="form-group">
+            <label for="descricao">Descrição</label>
+            <input
+              type="text"
+              id="descricao"
+              name="descricao"
+              placeholder="Ex: Financiamento carro"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="valor">Valor da parcela (R$)</label>
+            <input
+              type="number"
+              id="valor"
+              name="valor"
+              placeholder="Ex: 500"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="parcelas">Quantidade de parcelas</label>
+            <input
+              type="number"
+              id="parcelas"
+              name="parcelas"
+              placeholder="Ex: 12"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="data-inicial">Data inicial</label>
+            <input type="date" id="data-inicial" name="data-inicial" />
+          </div>
+
+          <button type="submit" class="btn-submit">Adicionar</button>
+        </form>
+      </section>
+
+      <section id="months-list" class="months-list"></section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="dados.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

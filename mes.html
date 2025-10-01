@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0044cc" />
+    <link rel="manifest" href="manifest.json" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Bankim</title>
+  </head>
+  <body>
+    <main class="container">
+      <h1>📊 Detalhamento do Mês</h1>
+      <div class="grid-cards">
+        <div class="card card-fatura">
+          <h3>Fatura</h3>
+          <p id="valorFatura">R$ 0,00</p>
+        </div>
+        <div class="card card-parcelas">
+          <h3>Parcelas</h3>
+          <p id="valorParcelas">R$ 0,00</p>
+        </div>
+        <div class="card card-total">
+          <h3>Total</h3>
+          <p id="valorTotal">R$ 0,00</p>
+        </div>
+        <div class="card card-saldo">
+          <h3>Saldo</h3>
+          <p id="valorSaldo">R$ 0,00</p>
+        </div>
+      </div>
+
+      <h2>📝 Parcelas do mês</h2>
+      <ul id="listaParcelas" class="lista-parcelas"></ul>
+
+      <h2>📊 Gastos por Categoria</h2>
+      <canvas id="graficoCategoria"></canvas>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script src="dados.js"></script>
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const mesAtual = urlParams.get("mes");
+
+      const dadosMes = DataStorage.getMes(mesAtual);
+
+      document.getElementById(
+        "valorFatura"
+      ).textContent = `R$ ${dadosMes.totais.fatura.toFixed(2)}`;
+      document.getElementById(
+        "valorParcelas"
+      ).textContent = `R$ ${dadosMes.totais.parcelas.toFixed(2)}`;
+      document.getElementById(
+        "valorTotal"
+      ).textContent = `R$ ${dadosMes.totais.total.toFixed(2)}`;
+      document.getElementById(
+        "valorSaldo"
+      ).textContent = `R$ ${dadosMes.totais.saldo.toFixed(2)}`;
+
+      const listaParcelasEl = document.getElementById("listaParcelas");
+      listaParcelasEl.innerHTML = "";
+
+      const parcelasDoMes = DataStorage.getParcelas().filter((p) =>
+        DataStorage.pertenceAoMes(p, mesAtual)
+      );
+
+      if (parcelasDoMes.length === 0) {
+        listaParcelasEl.innerHTML = "<li>Nenhuma parcela neste mês</li>";
+      }
+
+      parcelasDoMes.forEach((p) => {
+        const li = document.createElement("li");
+        const numParcela = DataStorage.numeroParcela(p, mesAtual);
+        li.textContent = `${p.descricao} - R$ ${p.valor.toFixed(
+          2
+        )} (${numParcela}/${p.repeticoes})`;
+        listaParcelasEl.appendChild(li);
+      });
+
+      function agruparPorCategoria(dadosCSV) {
+        const soma = {};
+        for (const item of dadosCSV) {
+          soma[item.categoria] = (soma[item.categoria] || 0) + item.valor;
+        }
+        return soma;
+      }
+
+      function gerarCores(qtd) {
+        const base = [
+          "#FF6384",
+          "#36A2EB",
+          "#FFCE56",
+          "#4BC0C0",
+          "#9966FF",
+          "#FF9F40",
+          "#66BB6A",
+          "#FFA726",
+          "#8D6E63",
+          "#BA68C8",
+          "#D4E157",
+          "#7986CB",
+        ];
+        const cores = [];
+        for (let i = 0; i < qtd; i++) {
+          cores.push(base[i % base.length]);
+        }
+        return cores;
+      }
+
+      function gerarGraficoCategoria() {
+        const ctx = document
+          .getElementById("graficoCategoria")
+          .getContext("2d");
+        const agrupado = agruparPorCategoria(dadosMes.fatura);
+        const labels = Object.keys(agrupado);
+        const valores = Object.values(agrupado);
+
+        new Chart(ctx, {
+          type: "pie",
+          data: {
+            labels: labels,
+            datasets: [
+              {
+                data: valores,
+                backgroundColor: gerarCores(labels.length),
+              },
+            ],
+          },
+          options: {
+            plugins: {
+              legend: { position: "right" },
+              title: { display: true, text: "Gastos por Categoria" },
+            },
+          },
+        });
+      }
+
+      gerarGraficoCategoria();
+    </script>
+  </body>
+</html>
