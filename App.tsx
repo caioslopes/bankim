@@ -1,17 +1,31 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import NovoLancamentoScreen from "./src/screens/NovoLancamentoScreen";
+import ResumoAnualScreen from "./src/screens/ResumoAnualScreen";
 
 const Stack = createNativeStackNavigator();
 
-function TelaDashboard() {
+function TelaDashboard({ navigation }: any) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Dashboard Financeiro</Text>
       <Text>Aqui ficará a lista de meses.</Text>
+      <TouchableOpacity onPress={() => navigation.navigate("NovoLancamento")}>
+        <Text>Novo lançamento</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("ResumoAnual")}>
+        <Text>Resumo anual tela</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -39,6 +53,16 @@ export default function App() {
             name="DetalhesMes"
             component={TelaDetalhesMes}
             options={{ title: "Detalhes do Mês" }}
+          />
+          <Stack.Screen
+            name="NovoLancamento"
+            component={NovoLancamentoScreen}
+            options={{ title: "Novo lancamento" }}
+          />
+          <Stack.Screen
+            name="ResumoAnual"
+            component={ResumoAnualScreen}
+            options={{ title: "Resumo Anual Detalhes" }}
           />
         </Stack.Navigator>
       </NavigationContainer>
