@@ -13,7 +13,7 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 
-import { collections, database } from "../database";
+import { collections, database } from "../../database";
 
 export default function NovoLancamentoScreen() {
   const navigation = useNavigation();
