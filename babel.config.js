@@ -3,9 +3,8 @@ module.exports = function (api) {
   return {
     presets: ["babel-preset-expo"],
     plugins: [
-      // Plugin obrigatório para o WatermelonDB funcionar
-      // Ele precisa vir ANTES de 'transform-class-properties'
       ["@babel/plugin-proposal-decorators", { legacy: true }],
+      ["react-native-reanimated/plugin"],
     ],
   };
 };

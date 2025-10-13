@@ -22,7 +22,7 @@ export default function RootNavigator() {
         name="NovoLancamento"
         component={NovoLancamentoScreen}
         options={{
-          title: "Novo Lançamento",
+          title: "Nova despesa",
         }}
       />
     </Stack.Navigator>

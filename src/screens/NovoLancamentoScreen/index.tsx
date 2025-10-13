@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Platform,
   Alert,
+  ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import DateTimePicker, {
@@ -15,13 +16,18 @@ import DateTimePicker, {
 
 import { collections, database } from "../../database";
 
+type TipoMovimento = "DESPESA" | "RENDA";
+type TipoDespesa = "UNICA" | "FIXA" | "VARIAVEL";
+
 export default function NovoLancamentoScreen() {
   const navigation = useNavigation();
 
+  const [tipoMovimento, setTipoMovimento] = useState<TipoMovimento>("DESPESA");
+  const [tipoDespesa, setTipoDespesa] = useState<TipoDespesa>("UNICA");
   const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState("");
-  const [tipo, setTipo] = useState("DESPESA");
   const [data, setData] = useState(new Date());
+  const [diaVencimento, setDiaVencimento] = useState("");
   const [showDatePicker, setShowDatePicker] = useState(false);
 
   const onDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
@@ -31,51 +37,87 @@ export default function NovoLancamentoScreen() {
   };
 
   const handleSalvar = async () => {
-    if (!descricao.trim() || !valor.trim()) {
-      Alert.alert("Erro", "Descrição e Valor são obrigatórios.");
-      return;
-    }
-
     const valorNumerico = parseFloat(valor.replace(",", "."));
-    if (isNaN(valorNumerico) || valorNumerico <= 0) {
-      Alert.alert("Erro", "O valor inserido é inválido.");
+
+    if (
+      !descricao.trim() ||
+      !valor.trim() ||
+      isNaN(valorNumerico) ||
+      valorNumerico <= 0
+    ) {
+      Alert.alert(
+        "Erro de Validação",
+        "Descrição e Valor são obrigatórios e devem ser válidos."
+      );
       return;
     }
 
     try {
       await database.write(async () => {
-        await collections.lancamentos.create((novoLancamento) => {
-          novoLancamento.descricao = descricao;
-          novoLancamento.valor =
-            tipo === "DESPESA" ? valorNumerico * -1 : valorNumerico;
-          novoLancamento.data_vencimento = data;
-          novoLancamento.tipo = tipo;
-          novoLancamento.pago = false;
-        });
+        if (tipoMovimento === "RENDA" || tipoDespesa === "UNICA") {
+          await collections.lancamentos.create((lancamento) => {
+            lancamento.descricao = descricao;
+            lancamento.valor =
+              tipoMovimento === "DESPESA" ? valorNumerico * -1 : valorNumerico;
+            lancamento.data_vencimento = data;
+            lancamento.tipo = tipoMovimento;
+            lancamento.pago = false;
+          });
+        } else {
+          const diaNumerico = parseInt(diaVencimento, 10);
+          if (isNaN(diaNumerico) || diaNumerico < 1 || diaNumerico > 31) {
+            Alert.alert(
+              "Erro de Validação",
+              "O dia de vencimento para despesas recorrentes é obrigatório e deve ser entre 1 e 31."
+            );
+            return;
+          }
+
+          await collections.fontesRecorrentes.create((fonte) => {
+            fonte.descricao = descricao;
+            fonte.tipo =
+              tipoDespesa === "FIXA" ? "DESPESA_FIXA" : "DESPESA_VARIAVEL";
+            fonte.valor_padrao = valorNumerico;
+            fonte.dia_do_mes = diaNumerico;
+          });
+        }
       });
 
-      Alert.alert("Sucesso!", "Lançamento salvo.");
+      Alert.alert("Sucesso!", "Seu registro foi salvo.");
       navigation.goBack();
     } catch (error) {
       console.error(error);
-      Alert.alert("Erro ao Salvar", "Não foi possível salvar o lançamento.");
+      Alert.alert(
+        "Erro ao Salvar",
+        "Ocorreu um erro inesperado. Tente novamente."
+      );
     }
   };
 
+  const getValorLabel = () => {
+    if (tipoMovimento === "RENDA") return "Valor da Renda (R$)";
+    if (tipoDespesa === "FIXA") return "Valor Fixo (R$)";
+    if (tipoDespesa === "VARIAVEL") return "Valor Médio (para previsão) (R$)";
+    return "Valor da Despesa (R$)";
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.tipoContainer}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ paddingBottom: 40 }}
+    >
+      <View style={styles.segmentControl}>
         <TouchableOpacity
           style={[
-            styles.tipoButton,
-            tipo === "DESPESA" && styles.tipoButtonActive,
+            styles.segmentButton,
+            tipoMovimento === "DESPESA" && styles.segmentButtonActive,
           ]}
-          onPress={() => setTipo("DESPESA")}
+          onPress={() => setTipoMovimento("DESPESA")}
         >
           <Text
             style={[
-              styles.tipoText,
-              tipo === "DESPESA" && styles.tipoTextActive,
+              styles.segmentText,
+              tipoMovimento === "DESPESA" && styles.segmentTextActive,
             ]}
           >
             Despesa
@@ -83,18 +125,77 @@ export default function NovoLancamentoScreen() {
         </TouchableOpacity>
         <TouchableOpacity
           style={[
-            styles.tipoButton,
-            tipo === "RENDA" && styles.tipoButtonActive,
+            styles.segmentButton,
+            tipoMovimento === "RENDA" && styles.segmentButtonActive,
           ]}
-          onPress={() => setTipo("RENDA")}
+          onPress={() => setTipoMovimento("RENDA")}
         >
           <Text
-            style={[styles.tipoText, tipo === "RENDA" && styles.tipoTextActive]}
+            style={[
+              styles.segmentText,
+              tipoMovimento === "RENDA" && styles.segmentTextActive,
+            ]}
           >
             Renda
           </Text>
         </TouchableOpacity>
       </View>
+
+      {tipoMovimento === "DESPESA" && (
+        <>
+          <Text style={styles.label}>Tipo de Despesa</Text>
+          <View style={[styles.segmentControl, { backgroundColor: "#e9ecef" }]}>
+            <TouchableOpacity
+              style={[
+                styles.segmentButton,
+                tipoDespesa === "UNICA" && styles.segmentButtonActive,
+              ]}
+              onPress={() => setTipoDespesa("UNICA")}
+            >
+              <Text
+                style={[
+                  styles.segmentText,
+                  tipoDespesa === "UNICA" && styles.segmentTextActive,
+                ]}
+              >
+                Única
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.segmentButton,
+                tipoDespesa === "FIXA" && styles.segmentButtonActive,
+              ]}
+              onPress={() => setTipoDespesa("FIXA")}
+            >
+              <Text
+                style={[
+                  styles.segmentText,
+                  tipoDespesa === "FIXA" && styles.segmentTextActive,
+                ]}
+              >
+                Fixa
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.segmentButton,
+                tipoDespesa === "VARIAVEL" && styles.segmentButtonActive,
+              ]}
+              onPress={() => setTipoDespesa("VARIAVEL")}
+            >
+              <Text
+                style={[
+                  styles.segmentText,
+                  tipoDespesa === "VARIAVEL" && styles.segmentTextActive,
+                ]}
+              >
+                Variável
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
 
       <Text style={styles.label}>Descrição</Text>
       <TextInput
@@ -104,38 +205,52 @@ export default function NovoLancamentoScreen() {
         onChangeText={setDescricao}
       />
 
-      <Text style={styles.label}>Valor (R$)</Text>
+      <Text style={styles.label}>{getValorLabel()}</Text>
       <TextInput
         style={styles.input}
         placeholder="100,00"
-        keyboardType="numeric"
+        keyboardType="decimal-pad"
         value={valor}
         onChangeText={setValor}
       />
 
-      <Text style={styles.label}>Data de Vencimento</Text>
-      <TouchableOpacity
-        style={styles.input}
-        onPress={() => setShowDatePicker(true)}
-      >
-        <Text>{data.toLocaleDateString("pt-BR")}</Text>
-      </TouchableOpacity>
+      {tipoMovimento === "RENDA" || tipoDespesa === "UNICA" ? (
+        <>
+          <Text style={styles.label}>Data de Vencimento</Text>
+          <TouchableOpacity
+            style={styles.input}
+            onPress={() => setShowDatePicker(true)}
+          >
+            <Text>{data.toLocaleDateString("pt-BR")}</Text>
+          </TouchableOpacity>
+        </>
+      ) : (
+        <>
+          <Text style={styles.label}>Dia do Vencimento</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Ex: 10"
+            keyboardType="number-pad"
+            maxLength={2}
+            value={diaVencimento}
+            onChangeText={setDiaVencimento}
+          />
+        </>
+      )}
 
       <TouchableOpacity style={styles.button} onPress={handleSalvar}>
-        <Text style={styles.buttonText}>Salvar Lançamento</Text>
+        <Text style={styles.buttonText}>Salvar</Text>
       </TouchableOpacity>
 
       {showDatePicker && (
         <DateTimePicker
-          testID="dateTimePicker"
           value={data}
           mode="date"
-          is24Hour={true}
           display="default"
           onChange={onDateChange}
         />
       )}
-    </View>
+    </ScrollView>
   );
 }
 
@@ -143,12 +258,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#f5f5f5",
+    backgroundColor: "#f8f9fa",
   },
   label: {
     fontSize: 16,
     marginBottom: 8,
-    color: "#333",
+    color: "#495057",
     fontWeight: "500",
   },
   input: {
@@ -159,28 +274,29 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 20,
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "#ced4da",
   },
-  tipoContainer: {
+  segmentControl: {
     flexDirection: "row",
     marginBottom: 20,
     backgroundColor: "#e0e0e0",
     borderRadius: 8,
+    padding: 2,
   },
-  tipoButton: {
+  segmentButton: {
     flex: 1,
-    padding: 12,
+    padding: 10,
     alignItems: "center",
-    borderRadius: 8,
+    borderRadius: 7,
   },
-  tipoButtonActive: {
+  segmentButtonActive: {
     backgroundColor: "#007bff",
   },
-  tipoText: {
-    fontSize: 16,
+  segmentText: {
+    fontSize: 15,
     color: "#333",
   },
-  tipoTextActive: {
+  segmentTextActive: {
     color: "#fff",
     fontWeight: "bold",
   },
