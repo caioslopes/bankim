@@ -1,8 +1,8 @@
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 export type RootStackParamList = {
-  ResumoAnual: undefined;
-  NovoLancamento: undefined;
+  DashboardScreen: undefined;
+  AdicionarFonteRecorrenteScreen: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> =

@@ -3,27 +3,21 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { RootStackParamList } from "./types";
 
-import ResumoAnualScreen from "../screens/ResumoAnualScreen";
-import NovoLancamentoScreen from "../screens/NovoLancamentoScreen";
+import DashboardScreen from "../screens/DashboardScreen";
+import AdicionarFonteRecorrenteScreen from "../screens/AdicionarFonteRecorrenteScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootNavigator() {
   return (
-    <Stack.Navigator initialRouteName="ResumoAnual">
+    <Stack.Navigator
+      initialRouteName="DashboardScreen"
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen name="DashboardScreen" component={DashboardScreen} />
       <Stack.Screen
-        name="ResumoAnual"
-        component={ResumoAnualScreen}
-        options={{
-          title: "Resumo Anual",
-        }}
-      />
-      <Stack.Screen
-        name="NovoLancamento"
-        component={NovoLancamentoScreen}
-        options={{
-          title: "Nova despesa",
-        }}
+        name="AdicionarFonteRecorrenteScreen"
+        component={AdicionarFonteRecorrenteScreen}
       />
     </Stack.Navigator>
   );

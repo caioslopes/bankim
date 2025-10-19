@@ -1,14 +1,16 @@
 import { Model } from "@nozbe/watermelondb";
-import { field, relation, text } from "@nozbe/watermelondb/decorators";
-import Categoria from "./Categoria";
+import { date, field, readonly, text } from "@nozbe/watermelondb/decorators";
+import { TipoOperacaoEnum } from "./TipoOperacaoEnum";
 
 export default class FonteRecorrente extends Model {
   static table = "fontes_recorrentes";
 
   @text("descricao") descricao!: string;
-  @text("tipo") tipo!: string;
-  @field("valor_padrao") valor_padrao!: number;
-  @field("dia_do_mes") dia_do_mes!: number;
+  @text("tipo") tipo!: TipoOperacaoEnum; // ENTRADA | SAIDA
+  @field("valor") valor!: number;
+  @field("data_vencimento") dataVencimento!: number;
+  @date("vigente_ate") vigenteAte?: Date;
 
-  @relation("categorias", "categoria_id") categoria!: Categoria;
+  @readonly @date("created_at") createdAt!: Date;
+  @readonly @date("updated_at") updatedAt!: Date;
 }
