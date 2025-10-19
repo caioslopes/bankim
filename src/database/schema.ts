@@ -4,6 +4,20 @@ export const mySchema = appSchema({
   version: 6,
   tables: [
     tableSchema({
+      name: "cartoes",
+      columns: [
+        { name: "nome", type: "string" },
+        { name: "emissor", type: "string" },
+        { name: "dia_fechamento", type: "number" },
+        { name: "dia_vencimento", type: "number" },
+        { name: "ativo", type: "boolean" },
+
+        { name: "created_at", type: "number" },
+        { name: "updated_at", type: "number" },
+      ],
+    }),
+
+    tableSchema({
       name: "fontes_recorrentes",
       columns: [
         { name: "descricao", type: "string" },

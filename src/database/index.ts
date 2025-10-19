@@ -4,6 +4,7 @@ import SQLiteAdapter from "@nozbe/watermelondb/adapters/sqlite";
 import { mySchema } from "./schema";
 import FonteRecorrente from "./model/FonteRecorrente";
 import Lancamento from "./model/Lancamento";
+import Cartao from "./model/Cartao";
 
 const adapter = new SQLiteAdapter({
   schema: mySchema,
@@ -11,10 +12,11 @@ const adapter = new SQLiteAdapter({
 
 export const database = new Database({
   adapter,
-  modelClasses: [FonteRecorrente, Lancamento],
+  modelClasses: [Cartao, FonteRecorrente, Lancamento],
 });
 
 export const collections = {
+  cartoes: database.get<Cartao>("cartoes"),
   lancamentos: database.get<Lancamento>("lancamentos"),
   fontesRecorrentes: database.get<FonteRecorrente>("fontes_recorrentes"),
 };

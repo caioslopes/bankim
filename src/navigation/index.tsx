@@ -6,6 +6,7 @@ import { RootStackParamList } from "./types";
 import DashboardScreen from "../screens/DashboardScreen";
 import NovaFonteRecorrenteScreen from "../screens/NovaFonteRecorrenteScreen";
 import NovoLancamentoScreen from "../screens/NovoLancamentoScreen";
+import NovoCartaoScreen from "../screens/NovoCartaoScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -20,10 +21,12 @@ export default function RootNavigator() {
         name="NovaFonteRecorrenteScreen"
         component={NovaFonteRecorrenteScreen}
       />
+
       <Stack.Screen
         name="NovoLancamentoScreen"
         component={NovoLancamentoScreen}
       />
+      <Stack.Screen name="NovoCartaoScreen" component={NovoCartaoScreen} />
     </Stack.Navigator>
   );
 }

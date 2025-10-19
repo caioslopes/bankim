@@ -36,7 +36,7 @@ export default function DashboardScreen({ navigation }: Props) {
           {
             icon: "card",
             label: "Cartão",
-            onPress: () => navigation.navigate("NovoLancamentoScreen"),
+            onPress: () => navigation.navigate("NovoCartaoScreen"),
           },
         ]}
       />
