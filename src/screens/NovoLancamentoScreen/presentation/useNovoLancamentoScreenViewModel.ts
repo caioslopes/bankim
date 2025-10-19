@@ -10,7 +10,7 @@ import {
 } from "../../../repositories/LancamentoRepository";
 import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { Platform } from "react-native";
-import { gerarCompetencia } from "../../../helpers/gerar-competencia";
+import { gerarCompetencia } from "../../../helpers/manipular-meses";
 
 export type FormValues = {
   descricao: string;
