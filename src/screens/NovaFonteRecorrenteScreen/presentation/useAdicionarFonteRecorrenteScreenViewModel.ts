@@ -57,14 +57,6 @@ export function useNovaFonteRecorrenteScreenViewModel() {
   const onSubmit = async (values: FormValues) => {
     const { valor, diaVencimento, descricao } = values;
 
-    console.log("Enviando dados:", {
-      descricao,
-      tipoMovimento,
-      estadoMovimento,
-      diaVencimento: Number(diaVencimento),
-      valor: Number(valor),
-    });
-
     fonteRecorrenteRepository.create({
       descricao,
       tipoMovimento,

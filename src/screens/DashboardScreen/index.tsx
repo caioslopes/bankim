@@ -14,6 +14,7 @@ export default function DashboardScreen({ navigation }: Props) {
   return (
     <SafeScreen>
       <DetalhesMesRegente />
+      <Text style={{ fontWeight: 600 }}>Fontes recorrentes</Text>
       {fontes.map((fonte) => (
         <View key={fonte.id}>
           <Text>{fonte.descricao}</Text>
@@ -21,12 +22,27 @@ export default function DashboardScreen({ navigation }: Props) {
           <Text>{fonte.valor}</Text>
         </View>
       ))}
+
+      <Text style={{ marginTop: 40, fontWeight: 600 }}>Lançamentos</Text>
+      {lancamentos.map((lancamento) => (
+        <View key={lancamento.id}>
+          <Text>{lancamento.descricao}</Text>
+          <Text>{lancamento.tipoMovimento}</Text>
+          <Text>{lancamento.valor}</Text>
+        </View>
+      ))}
+
       <FloatingActionButtons
         options={[
           {
             icon: "pencil",
-            label: "Cadastrar movimentação",
+            label: "Movimentação recorrente",
             onPress: () => navigation.navigate("NovaFonteRecorrenteScreen"),
+          },
+          {
+            icon: "pencil",
+            label: "Lançamentos",
+            onPress: () => navigation.navigate("NovoLancamentoScreen"),
           },
         ]}
       />

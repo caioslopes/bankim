@@ -1,7 +1,6 @@
 import React from "react";
 import {
   View,
-  Text,
   TextInput,
   StyleSheet,
   TouchableOpacity,
@@ -9,9 +8,10 @@ import {
 } from "react-native";
 import { Controller } from "react-hook-form";
 import { TipoMovimentoEnum } from "../../database/model/enums/TipoMovimentoEnum";
-import { EstadoMovimentoEnum } from "../../database/model/enums/EstadoMovimentoEnum";
 import SafeScreen from "../../components/SafeScreen";
-import { useNovaFonteRecorrenteScreenViewModel } from "./presentation/useAdicionarFonteRecorrenteScreenViewModel";
+import Text from "../../components/Text";
+import useNovoLancamentoScreenViewModel from "./presentation/useNovoLancamentoScreenViewModel";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function NovoLancamentoScreen() {
   const {
@@ -22,12 +22,14 @@ export default function NovoLancamentoScreen() {
 
     tipoMovimento,
     setTipoMovimento,
-    estadoMovimento,
-    setEstadoMovimento,
+
+    data,
+    onDateChange,
+    showDatePicker,
+    setShowDatePicker,
 
     onSubmit,
-    getValorLabel,
-  } = useNovaFonteRecorrenteScreenViewModel();
+  } = useNovoLancamentoScreenViewModel();
 
   return (
     <SafeScreen>
@@ -35,7 +37,7 @@ export default function NovoLancamentoScreen() {
         style={styles.container}
         contentContainerStyle={{ paddingBottom: 40 }}
       >
-        <Text style={styles.label}>Tipo da movimentação</Text>
+        <Text style={styles.label}>Tipo do lançamento</Text>
         <View style={styles.segmentControl}>
           {(Object.keys(TipoMovimentoEnum) as TipoMovimentoEnum[]).map(
             (tipo) => (
@@ -59,32 +61,6 @@ export default function NovoLancamentoScreen() {
             )
           )}
         </View>
-
-        <Text style={styles.label}>Movimentação</Text>
-        <View style={[styles.segmentControl, { backgroundColor: "#e9ecef" }]}>
-          {(Object.keys(EstadoMovimentoEnum) as EstadoMovimentoEnum[]).map(
-            (tipo) => (
-              <TouchableOpacity
-                key={tipo}
-                style={[
-                  styles.segmentButton,
-                  estadoMovimento === tipo && styles.segmentButtonActive,
-                ]}
-                onPress={() => setEstadoMovimento(tipo)}
-              >
-                <Text
-                  style={[
-                    styles.segmentText,
-                    estadoMovimento === tipo && styles.segmentTextActive,
-                  ]}
-                >
-                  {tipo === "FIXA" ? "Fixa" : "Variável"}
-                </Text>
-              </TouchableOpacity>
-            )
-          )}
-        </View>
-
         <Text style={styles.label}>Descrição</Text>
         <Controller
           control={control}
@@ -101,8 +77,7 @@ export default function NovoLancamentoScreen() {
         {errors.descricao && (
           <Text style={styles.error}>{errors.descricao.message}</Text>
         )}
-
-        <Text style={styles.label}>{getValorLabel()}</Text>
+        <Text style={styles.label}>Valor (R$)</Text>
         <Controller
           control={control}
           name="valor"
@@ -120,29 +95,15 @@ export default function NovoLancamentoScreen() {
           <Text style={styles.error}>{errors.valor.message}</Text>
         )}
 
-        <>
-          <Text style={styles.label}>Dia do Vencimento</Text>
-          <Controller
-            control={control}
-            name="diaVencimento"
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                style={[
-                  styles.input,
-                  errors.diaVencimento && { borderColor: "red" },
-                ]}
-                placeholder="Ex: 10"
-                keyboardType="number-pad"
-                maxLength={2}
-                value={value}
-                onChangeText={onChange}
-              />
-            )}
-          />
-          {errors.diaVencimento && (
-            <Text style={styles.error}>{errors.diaVencimento.message}</Text>
-          )}
-        </>
+        <Text style={styles.label}>Data do lançamento</Text>
+        <TouchableOpacity
+          style={styles.input}
+          onPress={() => {
+            setShowDatePicker(true);
+          }}
+        >
+          <Text>{data.toLocaleDateString("pt-BR")}</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.button, isSubmitting && { opacity: 0.7 }]}
@@ -153,6 +114,15 @@ export default function NovoLancamentoScreen() {
             {isSubmitting ? "Salvando..." : "Salvar"}
           </Text>
         </TouchableOpacity>
+
+        {showDatePicker && (
+          <DateTimePicker
+            value={data}
+            mode="date"
+            display="default"
+            onChange={onDateChange}
+          />
+        )}
       </ScrollView>
     </SafeScreen>
   );

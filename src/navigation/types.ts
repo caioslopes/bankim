@@ -7,6 +7,7 @@ import type {
 export type RootStackParamList = {
   DashboardScreen: undefined;
   NovaFonteRecorrenteScreen: undefined;
+  NovoLancamentoScreen: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> =

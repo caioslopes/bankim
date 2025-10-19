@@ -1,4 +1,14 @@
 import { database, collections } from "../database";
+import { TipoMovimentoEnum } from "../database/model/enums/TipoMovimentoEnum";
+
+export type CreateLancamento = {
+  descricao: string;
+  tipoMovimento: TipoMovimentoEnum;
+  valor: number;
+  dataVencimento: Date;
+};
+
+export type UpdateLancamento = Partial<CreateLancamento>;
 
 class LancamentoRepository {
   private lancamentoCollection = collections.lancamentos;
@@ -11,7 +21,7 @@ class LancamentoRepository {
     return await this.lancamentoCollection.query().fetch();
   }
 
-  async create(data: { descricao: string; valor: number }) {
+  async create(data: CreateLancamento) {
     return await database.write(async () => {
       return await this.lancamentoCollection.create((fonte) => {
         Object.assign(fonte, data);
@@ -19,10 +29,7 @@ class LancamentoRepository {
     });
   }
 
-  async update(
-    id: string,
-    data: Partial<{ descricao: string; valor: number }>
-  ) {
+  async update(id: string, data: Partial<UpdateLancamento>) {
     const record = await this.lancamentoCollection.find(id);
     if (!record) return null;
 
