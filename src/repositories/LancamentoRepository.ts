@@ -6,6 +6,7 @@ export type CreateLancamento = {
   tipoMovimento: TipoMovimentoEnum;
   valor: number;
   dataVencimento: Date;
+  competencia: string;
 };
 
 export type UpdateLancamento = Partial<CreateLancamento>;

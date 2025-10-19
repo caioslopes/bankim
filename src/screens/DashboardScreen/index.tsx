@@ -29,6 +29,7 @@ export default function DashboardScreen({ navigation }: Props) {
           <Text>{lancamento.descricao}</Text>
           <Text>{lancamento.tipoMovimento}</Text>
           <Text>{lancamento.valor}</Text>
+          <Text>{lancamento.competencia}</Text>
         </View>
       ))}
 

@@ -10,6 +10,7 @@ import {
 } from "../../../repositories/LancamentoRepository";
 import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { Platform } from "react-native";
+import { gerarCompetencia } from "../../../helpers/gerar-competencia";
 
 export type FormValues = {
   descricao: string;
@@ -57,6 +58,7 @@ export default function useNovoLancamentoScreenViewModel() {
       tipoMovimento,
       valor: Number(valor),
       dataVencimento: data,
+      competencia: gerarCompetencia(data),
     } as CreateLancamento);
 
     reset();
