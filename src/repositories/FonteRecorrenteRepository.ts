@@ -1,4 +1,17 @@
 import { database, collections } from "../database";
+import { EstadoMovimentoEnum } from "../database/model/enums/EstadoMovimentoEnum";
+import { TipoMovimentoEnum } from "../database/model/enums/TipoMovimentoEnum";
+
+export type CreateFonteRecorrente = {
+  descricao: string;
+  tipoMovimento: TipoMovimentoEnum;
+  estadoMovimento: EstadoMovimentoEnum;
+  valor: number;
+  diaVencimento: number;
+  vigenteAte?: Date;
+};
+
+export type UpdateFonteRecorrente = Partial<CreateFonteRecorrente>;
 
 class FonteRecorrenteRepository {
   private fonteRecorrenteCollection = collections.fontesRecorrentes;
@@ -11,7 +24,7 @@ class FonteRecorrenteRepository {
     return await this.fonteRecorrenteCollection.query().fetch();
   }
 
-  async create(data: { descricao: string; valor: number }) {
+  async create(data: CreateFonteRecorrente) {
     return await database.write(async () => {
       return await this.fonteRecorrenteCollection.create((fonte) => {
         Object.assign(fonte, data);
@@ -19,10 +32,7 @@ class FonteRecorrenteRepository {
     });
   }
 
-  async update(
-    id: string,
-    data: Partial<{ descricao: string; valor: number }>
-  ) {
+  async update(id: string, data: UpdateFonteRecorrente) {
     const record = await this.fonteRecorrenteCollection.find(id);
     if (!record) return null;
 

@@ -1,15 +1,16 @@
 import { appSchema, tableSchema } from "@nozbe/watermelondb";
 
 export const mySchema = appSchema({
-  version: 3,
+  version: 6,
   tables: [
     tableSchema({
       name: "fontes_recorrentes",
       columns: [
         { name: "descricao", type: "string" },
-        { name: "tipo", type: "string" },
+        { name: "tipo_movimento", type: "string" },
+        { name: "estado_movimento", type: "string" },
         { name: "valor", type: "number" },
-        { name: "data_vencimento", type: "number" },
+        { name: "dia_vencimento", type: "number" },
         { name: "vigente_ate", type: "number", isOptional: true },
 
         { name: "created_at", type: "number" },
@@ -24,7 +25,8 @@ export const mySchema = appSchema({
         { name: "valor", type: "number" },
         { name: "data_vencimento", type: "number" },
         { name: "data_pagamento", type: "number", isOptional: true },
-        { name: "tipo", type: "string" },
+        { name: "tipo_movimento", type: "string" },
+        { name: "estado_movimento", type: "string" },
         { name: "competencia", type: "string" },
         { name: "fonte_recorrente_id", type: "string", isOptional: true },
 

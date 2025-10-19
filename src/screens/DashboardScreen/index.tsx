@@ -1,10 +1,10 @@
-import { FlatList } from "react-native";
 import FloatingActionButtons from "../../components/FloatingActionButtons";
 import { RootStackScreenProps } from "../../navigation/types";
 import SafeScreen from "../../components/SafeScreen";
-import MesCard from "./components/MesCard";
 import useDashboardScreenViewModel from "./presentation/useDashboardScreenViewModel";
 import Text from "../../components/Text";
+import DetalhesMesRegente from "./components/DetalhesMesRegente";
+import { View } from "react-native";
 
 type Props = RootStackScreenProps<"DashboardScreen">;
 
@@ -13,20 +13,20 @@ export default function DashboardScreen({ navigation }: Props) {
 
   return (
     <SafeScreen>
-      <Text>{JSON.stringify(fontes)}</Text>
-      <Text>{JSON.stringify(lancamentos)}</Text>
-      {/* <FlatList
-        data={fontes}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <MesCard />}
-      /> */}
+      <DetalhesMesRegente />
+      {fontes.map((fonte) => (
+        <View key={fonte.id}>
+          <Text>{fonte.descricao}</Text>
+          <Text>{fonte.tipoMovimento}</Text>
+          <Text>{fonte.valor}</Text>
+        </View>
+      ))}
       <FloatingActionButtons
         options={[
           {
             icon: "pencil",
-            label: "Despesa recorrente",
-            onPress: () =>
-              navigation.navigate("AdicionarFonteRecorrenteScreen"),
+            label: "Cadastrar movimentação",
+            onPress: () => navigation.navigate("NovaFonteRecorrenteScreen"),
           },
         ]}
       />

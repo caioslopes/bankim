@@ -7,7 +7,8 @@ import {
   text,
 } from "@nozbe/watermelondb/decorators";
 import FonteRecorrente from "./FonteRecorrente";
-import { TipoOperacaoEnum } from "./TipoOperacaoEnum";
+import { TipoMovimentoEnum } from "./enums/TipoMovimentoEnum";
+import { EstadoMovimentoEnum } from "./enums/EstadoMovimentoEnum";
 
 export default class Lancamento extends Model {
   static table = "lancamentos";
@@ -16,8 +17,9 @@ export default class Lancamento extends Model {
   @field("valor") valor!: number;
   @date("data_vencimento") dataVencimento!: Date;
   @date("data_pagamento") dataPagamento?: Date;
-  @text("tipo") tipo!: TipoOperacaoEnum; // ENTRADA | SAIDA
-  @field("competencia") competencia!: string;
+  @text("tipo_movimento") tipoMovimento!: TipoMovimentoEnum;
+  @text("estado_movimento") estadoMovimento!: EstadoMovimentoEnum;
+  @field("competencia") competencia!: string; // "YYYY-MM"
 
   @relation("fontes_recorrentes", "fonte_recorrente_id")
   fonteRecorrente?: FonteRecorrente;

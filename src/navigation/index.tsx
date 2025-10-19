@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { RootStackParamList } from "./types";
 
 import DashboardScreen from "../screens/DashboardScreen";
-import AdicionarFonteRecorrenteScreen from "../screens/AdicionarFonteRecorrenteScreen";
+import NovaFonteRecorrenteScreen from "../screens/AdicionarFonteRecorrenteScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -16,8 +16,8 @@ export default function RootNavigator() {
     >
       <Stack.Screen name="DashboardScreen" component={DashboardScreen} />
       <Stack.Screen
-        name="AdicionarFonteRecorrenteScreen"
-        component={AdicionarFonteRecorrenteScreen}
+        name="NovaFonteRecorrenteScreen"
+        component={NovaFonteRecorrenteScreen}
       />
     </Stack.Navigator>
   );

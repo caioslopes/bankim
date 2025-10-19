@@ -1,9 +1,19 @@
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useNavigation } from "@react-navigation/native";
+import type {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack";
 
 export type RootStackParamList = {
   DashboardScreen: undefined;
-  AdicionarFonteRecorrenteScreen: undefined;
+  NovaFonteRecorrenteScreen: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> =
   NativeStackScreenProps<RootStackParamList, T>;
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
+export function useTypedNavigation() {
+  return useNavigation<NavigationProp>();
+}

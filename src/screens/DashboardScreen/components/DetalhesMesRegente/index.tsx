@@ -3,10 +3,10 @@ import Text from "../../../../components/Text";
 
 type Props = {};
 
-export default function MesCard({}: Props) {
+export default function DetalhesMesRegente({}: Props) {
   return (
     <View>
-      <Text></Text>
+      <Text>DetalhesMesRegente</Text>
     </View>
   );
 }
