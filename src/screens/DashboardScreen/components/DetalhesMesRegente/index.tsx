@@ -2,6 +2,7 @@ import { StyleSheet, View } from "react-native";
 import Text from "../../../../components/Text";
 import { desestruturarCompetencia } from "../../../../helpers/manipular-meses";
 import Theme from "../../../../theme/theme";
+import { formatarValorMonetario } from "../../../../helpers/formatadores";
 
 type Props = {
   mesInfo: {
@@ -19,13 +20,77 @@ export default function DetalhesMesRegente({ mesInfo }: Props) {
   return (
     <View style={styles.container}>
       <View style={styles.headerCard}>
-        <Text style={{ fontWeight: 600 }}>{data.mes}</Text>
-        <Text style={{ fontWeight: 600 }}>{data.ano}</Text>
+        <Text
+          style={{
+            fontFamily: Theme.font.family.bold,
+            color: Theme.colors.textInverse,
+          }}
+        >
+          {data.mes}
+        </Text>
+        <Text
+          style={{
+            fontFamily: Theme.font.family.bold,
+            color: Theme.colors.textInverse,
+          }}
+        >
+          {data.ano}
+        </Text>
       </View>
       <View style={styles.contentCard}>
-        <Text>R$ {gastos}</Text>
-        <Text>R$ {faltaPagar}</Text>
-        <Text>R$ {saldo}</Text>
+        <View style={styles.valueCard}>
+          <Text
+            style={{
+              color: Theme.colors.textInverse,
+            }}
+          >
+            gastos
+          </Text>
+          <Text
+            style={{
+              color: Theme.colors.textInverse,
+              fontFamily: Theme.font.family.bold,
+            }}
+          >
+            {formatarValorMonetario(gastos)}
+          </Text>
+        </View>
+
+        <View style={styles.valueCard}>
+          <Text
+            style={{
+              color: Theme.colors.textInverse,
+            }}
+          >
+            a pagar
+          </Text>
+          <Text
+            style={{
+              color: Theme.colors.textInverse,
+              fontFamily: Theme.font.family.bold,
+            }}
+          >
+            {formatarValorMonetario(faltaPagar)}
+          </Text>
+        </View>
+
+        <View style={styles.valueCard}>
+          <Text
+            style={{
+              color: Theme.colors.textInverse,
+            }}
+          >
+            saldo
+          </Text>
+          <Text
+            style={{
+              color: Theme.colors.textInverse,
+              fontFamily: Theme.font.family.bold,
+            }}
+          >
+            {formatarValorMonetario(saldo)}
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -34,7 +99,6 @@ export default function DetalhesMesRegente({ mesInfo }: Props) {
 const styles = StyleSheet.create({
   container: {
     padding: Theme.space.lg,
-    //flex: 1,
   },
   headerCard: {
     flexDirection: "row",
@@ -43,5 +107,9 @@ const styles = StyleSheet.create({
   contentCard: {
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  valueCard: {
+    paddingVertical: Theme.space.md,
+    borderRadius: Theme.radius.medium,
   },
 });

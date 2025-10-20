@@ -21,6 +21,7 @@ export default function ListagemMeses({ meses }: Props) {
         renderItem={({ item }) => <MesCard mesInfo={item} />}
         contentContainerStyle={{ padding: Theme.space.lg }}
         ItemSeparatorComponent={Separator}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );

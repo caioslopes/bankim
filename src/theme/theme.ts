@@ -43,9 +43,9 @@ const Theme = {
   },
   font: {
     family: {
-      regular: "System",
-      medium: "System",
-      bold: "System",
+      regular: "Inter_400Regular",
+      semiBold: "Inter_600SemiBold",
+      bold: "Inter_700Bold",
     },
     size: {
       caption: 12,

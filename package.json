@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo-google-fonts/inter": "^0.4.2",
     "@hookform/resolvers": "^5.2.2",
     "@nozbe/simdjson": "^3.9.4",
     "@nozbe/watermelondb": "^0.28.0",
@@ -19,6 +20,8 @@
     "@react-navigation/native-stack": "^7.3.27",
     "date-fns": "^4.1.0",
     "expo": "^52.0.0",
+    "expo-font": "~13.0.4",
+    "expo-splash-screen": "~0.29.24",
     "expo-sqlite": "~15.1.4",
     "expo-status-bar": "~2.0.1",
     "react": "18.3.1",

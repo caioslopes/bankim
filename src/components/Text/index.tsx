@@ -11,7 +11,7 @@ export default function Text({ children, style, ...props }: TextProps) {
         {
           fontSize: Theme.font.size.body,
           color: Theme.colors.textPrimary,
-          //fontFamily: Theme.font.family.regular,
+          fontFamily: Theme.font.family.regular,
         },
         style,
       ]}
