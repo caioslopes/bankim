@@ -3,8 +3,8 @@ import { RootStackScreenProps } from "../../navigation/types";
 import SafeScreen from "../../components/SafeScreen";
 import useDashboardScreenViewModel from "./presentation/useDashboardScreenViewModel";
 import DetalhesMesRegente from "./components/DetalhesMesRegente";
-import { FlatList } from "react-native";
-import MesCard from "./components/MesCard";
+import ListagemMeses from "./components/ListagemMeses";
+import Theme from "../../theme/theme";
 
 type Props = RootStackScreenProps<"DashboardScreen">;
 
@@ -12,14 +12,10 @@ export default function DashboardScreen({ navigation }: Props) {
   const { mesVigente, meses } = useDashboardScreenViewModel();
 
   return (
-    <SafeScreen>
+    <SafeScreen style={{ backgroundColor: Theme.colors.primary }}>
       <DetalhesMesRegente mesInfo={mesVigente} />
 
-      <FlatList
-        data={meses}
-        keyExtractor={(item) => item.competencia}
-        renderItem={({ item }) => <MesCard mesInfo={item} />}
-      />
+      <ListagemMeses meses={meses} />
 
       <FloatingActionButtons
         options={[

@@ -10,7 +10,7 @@ export default function Text({ children, style, ...props }: TextProps) {
       style={[
         {
           fontSize: Theme.font.size.body,
-          color: Theme.color.textPrimary,
+          color: Theme.colors.textPrimary,
           //fontFamily: Theme.font.family.regular,
         },
         style,

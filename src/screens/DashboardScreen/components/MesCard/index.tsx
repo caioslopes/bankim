@@ -1,6 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import Text from "../../../../components/Text";
 import { desestruturarCompetencia } from "../../../../helpers/manipular-meses";
+import Theme from "../../../../theme/theme";
 
 type Props = {
   mesInfo: {
@@ -16,7 +17,7 @@ export default function MesCard({ mesInfo }: Props) {
   const data = desestruturarCompetencia(competencia);
 
   return (
-    <View>
+    <View style={styles.card}>
       <View style={styles.headerCard}>
         <Text style={{ fontWeight: 600 }}>{data.mes}</Text>
         <Text style={{ fontWeight: 600 }}>{data.ano}</Text>
@@ -31,6 +32,13 @@ export default function MesCard({ mesInfo }: Props) {
 }
 
 const styles = StyleSheet.create({
+  card: {
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: Theme.colors.border,
+    borderRadius: Theme.radius.medium,
+    padding: Theme.space.md,
+  },
   headerCard: {
     flexDirection: "row",
     justifyContent: "space-between",

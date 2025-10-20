@@ -29,7 +29,7 @@ export default function FloatingActionButtons({
 
   const zIndex = animationValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, 2],
+    outputRange: [-1, 2],
   });
 
   const translateY = animationValue.interpolate({
@@ -89,7 +89,7 @@ export default function FloatingActionButtons({
                   <Text style={styles.text}>{label}</Text>
                 </View>
                 <View style={styles.icon}>
-                  <Icon color={Theme.color.primary} size={20} name={icon} />
+                  <Icon color={Theme.colors.primary} size={20} name={icon} />
                 </View>
               </TouchableOpacity>
             );
@@ -99,7 +99,7 @@ export default function FloatingActionButtons({
 
       <TouchableOpacity onPress={handleClick} style={styles.showOptions}>
         <Animated.View style={{ transform: [{ rotate }] }}>
-          <Icon color={Theme.color.white} size={24} name="add" />
+          <Icon color={Theme.colors.white} size={24} name="add" />
         </Animated.View>
       </TouchableOpacity>
     </>
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 50,
     height: 50,
-    backgroundColor: Theme.color.primary,
+    backgroundColor: Theme.colors.primary,
     borderRadius: Theme.radius.full,
     position: "absolute",
     bottom: 60,
@@ -145,19 +145,19 @@ const styles = StyleSheet.create({
     paddingVertical: Theme.space.xxs,
     paddingHorizontal: Theme.space.xs,
     justifyContent: "center",
-    backgroundColor: Theme.color.white,
+    backgroundColor: Theme.colors.white,
     borderRadius: Theme.radius.small,
   },
   text: {
     fontWeight: "bold",
-    color: Theme.color.textSecondary,
+    color: Theme.colors.textSecondary,
   },
   icon: {
     justifyContent: "center",
     alignItems: "center",
     width: 44,
     height: 44,
-    backgroundColor: Theme.color.white,
+    backgroundColor: Theme.colors.white,
     borderRadius: Theme.radius.full,
   },
 });

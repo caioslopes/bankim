@@ -2,6 +2,7 @@ import {
   SafeAreaView,
   SafeAreaViewProps,
 } from "react-native-safe-area-context";
+import Theme from "../../theme/theme";
 
 export type SafeScreenProps = {} & SafeAreaViewProps;
 

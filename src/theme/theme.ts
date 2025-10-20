@@ -1,8 +1,10 @@
 const Theme = {
-  color: {
-    primary: "#007AFF",
-    secondary: "#FF9500",
-    tertiary: "#34C759",
+  colors: {
+    primary: "#497675",
+    secondary: "#E4E5B9",
+    tertiary: "#E9E1CA",
+    softBlue: "#CFEEFC",
+    softGreen: "#E0F2F2",
 
     textPrimary: "#1C1C1E",
     textSecondary: "#8E8E93",
@@ -16,6 +18,7 @@ const Theme = {
     error: "#FF3B30",
 
     white: "#FFFFFF",
+    border: "#e7e7e7",
   },
   size: {
     xxs: 12,
@@ -54,21 +57,21 @@ const Theme = {
   },
   shadow: {
     light: {
-      shadowColor: "#000",
+      shadowcolor: "#000",
       shadowOffset: { width: 0, height: 1 },
       shadowOpacity: 0.1,
       shadowRadius: 2,
       elevation: 1,
     },
     medium: {
-      shadowColor: "#000",
+      shadowcolor: "#000",
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.2,
       shadowRadius: 3,
       elevation: 3,
     },
     strong: {
-      shadowColor: "#000",
+      shadowcolor: "#000",
       shadowOffset: { width: 0, height: 4 },
       shadowOpacity: 0.3,
       shadowRadius: 5,
