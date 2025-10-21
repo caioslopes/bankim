@@ -10,15 +10,18 @@ type Props = {
     faltaPagar: number;
     gastos: number;
   }[];
+  irParaDetalhesDoMes: (competencia: string) => void;
 };
 
-export default function ListagemMeses({ meses }: Props) {
+export default function ListagemMeses({ meses, irParaDetalhesDoMes }: Props) {
   return (
     <View style={styles.container}>
       <FlatList
         data={meses}
         keyExtractor={(item) => item.competencia}
-        renderItem={({ item }) => <MesCard mesInfo={item} />}
+        renderItem={({ item }) => (
+          <MesCard mesInfo={item} irParaDetalhesDoMes={irParaDetalhesDoMes} />
+        )}
         contentContainerStyle={{ padding: Theme.space.lg }}
         ItemSeparatorComponent={Separator}
         showsVerticalScrollIndicator={false}

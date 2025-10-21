@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Text from "../../../../components/Text";
 import { desestruturarCompetencia } from "../../../../helpers/manipular-meses";
 import Theme from "../../../../theme/theme";
@@ -11,14 +11,20 @@ type Props = {
     faltaPagar: number;
     gastos: number;
   };
+  irParaDetalhesDoMes: (competencia: string) => void;
 };
 
-export default function MesCard({ mesInfo }: Props) {
+export default function MesCard({ mesInfo, irParaDetalhesDoMes }: Props) {
   const { competencia, saldo, faltaPagar, gastos } = mesInfo;
   const data = desestruturarCompetencia(competencia);
 
   return (
-    <View style={styles.card}>
+    <TouchableOpacity
+      style={styles.card}
+      onPress={() => {
+        irParaDetalhesDoMes(competencia);
+      }}
+    >
       <View style={styles.headerCard}>
         <Text style={{ fontWeight: 600 }}>{data.mes}</Text>
         <Text style={{ fontWeight: 600 }}>{data.ano}</Text>
@@ -67,7 +73,7 @@ export default function MesCard({ mesInfo }: Props) {
           </Text>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

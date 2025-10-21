@@ -9,6 +9,9 @@ export type RootStackParamList = {
   NovaFonteRecorrenteScreen: undefined;
   NovoLancamentoScreen: undefined;
   NovoCartaoScreen: undefined;
+  DetalhesMesScreen: {
+    competencia: string;
+  };
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> =

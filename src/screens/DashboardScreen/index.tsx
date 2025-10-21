@@ -9,13 +9,14 @@ import Theme from "../../theme/theme";
 type Props = RootStackScreenProps<"DashboardScreen">;
 
 export default function DashboardScreen({ navigation }: Props) {
-  const { mesVigente, meses } = useDashboardScreenViewModel();
+  const { mesVigente, meses, irParaDetalhesDoMes } =
+    useDashboardScreenViewModel();
 
   return (
     <SafeScreen style={{ backgroundColor: Theme.colors.primary }}>
       <DetalhesMesRegente mesInfo={mesVigente} />
 
-      <ListagemMeses meses={meses} />
+      <ListagemMeses meses={meses} irParaDetalhesDoMes={irParaDetalhesDoMes} />
 
       <FloatingActionButtons
         options={[
