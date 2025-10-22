@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from "@nozbe/watermelondb";
 
 export const mySchema = appSchema({
-  version: 6,
+  version: 7,
   tables: [
     tableSchema({
       name: "cartoes",
@@ -43,6 +43,7 @@ export const mySchema = appSchema({
         { name: "estado_movimento", type: "string" },
         { name: "competencia", type: "string" },
         { name: "fonte_recorrente_id", type: "string", isOptional: true },
+        { name: "cartao_id", type: "string", isOptional: true },
 
         { name: "created_at", type: "number" },
         { name: "updated_at", type: "number" },

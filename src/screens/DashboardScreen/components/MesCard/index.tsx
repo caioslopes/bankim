@@ -42,7 +42,7 @@ export default function MesCard({ mesInfo, irParaDetalhesDoMes }: Props) {
             {formatarValorMonetario(gastos)}
           </Text>
         </View>
-        <View
+        {/* <View
           style={[
             styles.valueCard,
             { backgroundColor: Theme.colors.secondary },
@@ -56,7 +56,7 @@ export default function MesCard({ mesInfo, irParaDetalhesDoMes }: Props) {
           >
             {formatarValorMonetario(faltaPagar)}
           </Text>
-        </View>
+        </View> */}
         <View
           style={[
             styles.valueCard,
@@ -93,9 +93,11 @@ const styles = StyleSheet.create({
   contentCard: {
     flexDirection: "row",
     justifyContent: "space-between",
+    gap: Theme.space.xs,
   },
   valueCard: {
     padding: Theme.space.md,
     borderRadius: Theme.radius.medium,
+    flex: 1,
   },
 });

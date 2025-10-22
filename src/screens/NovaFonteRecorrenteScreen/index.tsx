@@ -12,6 +12,7 @@ import { TipoMovimentoEnum } from "../../database/model/enums/TipoMovimentoEnum"
 import { EstadoMovimentoEnum } from "../../database/model/enums/EstadoMovimentoEnum";
 import SafeScreen from "../../components/SafeScreen";
 import { useNovaFonteRecorrenteScreenViewModel } from "./presentation/useAdicionarFonteRecorrenteScreenViewModel";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 export default function NovaFonteRecorrenteScreen() {
   const {
@@ -24,6 +25,11 @@ export default function NovaFonteRecorrenteScreen() {
     setTipoMovimento,
     estadoMovimento,
     setEstadoMovimento,
+
+    data,
+    showDatePicker,
+    setShowDatePicker,
+    onDateChange,
 
     onSubmit,
     getValorLabel,
@@ -120,29 +126,37 @@ export default function NovaFonteRecorrenteScreen() {
           <Text style={styles.error}>{errors.valor.message}</Text>
         )}
 
-        <>
-          <Text style={styles.label}>Dia do Vencimento</Text>
-          <Controller
-            control={control}
-            name="diaVencimento"
-            render={({ field: { onChange, value } }) => (
-              <TextInput
-                style={[
-                  styles.input,
-                  errors.diaVencimento && { borderColor: "red" },
-                ]}
-                placeholder="Ex: 10"
-                keyboardType="number-pad"
-                maxLength={2}
-                value={value}
-                onChangeText={onChange}
-              />
-            )}
-          />
-          {errors.diaVencimento && (
-            <Text style={styles.error}>{errors.diaVencimento.message}</Text>
+        <Text style={styles.label}>Dia do Vencimento</Text>
+        <Controller
+          control={control}
+          name="diaVencimento"
+          render={({ field: { onChange, value } }) => (
+            <TextInput
+              style={[
+                styles.input,
+                errors.diaVencimento && { borderColor: "red" },
+              ]}
+              placeholder="Ex: 10"
+              keyboardType="number-pad"
+              maxLength={2}
+              value={value}
+              onChangeText={onChange}
+            />
           )}
-        </>
+        />
+        {errors.diaVencimento && (
+          <Text style={styles.error}>{errors.diaVencimento.message}</Text>
+        )}
+
+        <Text style={styles.label}>Vigente até</Text>
+        <TouchableOpacity
+          style={styles.input}
+          onPress={() => {
+            setShowDatePicker(true);
+          }}
+        >
+          <Text>{data.toLocaleDateString("pt-BR")}</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.button, isSubmitting && { opacity: 0.7 }]}
@@ -153,6 +167,15 @@ export default function NovaFonteRecorrenteScreen() {
             {isSubmitting ? "Salvando..." : "Salvar"}
           </Text>
         </TouchableOpacity>
+
+        {showDatePicker && (
+          <DateTimePicker
+            value={data}
+            mode="date"
+            display="default"
+            onChange={onDateChange}
+          />
+        )}
       </ScrollView>
     </SafeScreen>
   );

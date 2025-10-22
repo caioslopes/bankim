@@ -9,6 +9,8 @@ import {
   fonteRecorrenteRepository,
 } from "../../../repositories/FonteRecorrenteRepository";
 import { useTypedNavigation } from "../../../navigation/types";
+import { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import { Platform } from "react-native";
 
 export type FormValues = {
   descricao: string;
@@ -37,6 +39,8 @@ export function useNovaFonteRecorrenteScreenViewModel() {
   const [estadoMovimento, setEstadoMovimento] = useState<EstadoMovimentoEnum>(
     EstadoMovimentoEnum.FIXA
   );
+  const [data, setData] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const {
     control,
@@ -47,6 +51,12 @@ export function useNovaFonteRecorrenteScreenViewModel() {
     resolver: yupResolver(schema),
     defaultValues: { descricao: "", valor: "", diaVencimento: "" },
   });
+
+  const onDateChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+    const currentDate = selectedDate || data;
+    setShowDatePicker(Platform.OS === "ios");
+    setData(currentDate);
+  };
 
   const getValorLabel = () => {
     if (estadoMovimento === EstadoMovimentoEnum.VARIAVEL)
@@ -63,6 +73,7 @@ export function useNovaFonteRecorrenteScreenViewModel() {
       estadoMovimento,
       diaVencimento: Number(diaVencimento),
       valor: Number(valor),
+      vigenteAte: data,
     } as CreateFonteRecorrente);
 
     reset();
@@ -79,6 +90,11 @@ export function useNovaFonteRecorrenteScreenViewModel() {
     setTipoMovimento,
     estadoMovimento,
     setEstadoMovimento,
+
+    data,
+    showDatePicker,
+    setShowDatePicker,
+    onDateChange,
 
     onSubmit,
     getValorLabel,
