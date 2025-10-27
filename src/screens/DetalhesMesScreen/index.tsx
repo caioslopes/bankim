@@ -6,7 +6,7 @@ import useDetalhesMesScreenViewModel from "./presentation/useDetalhesMesScreenVi
 import Theme from "../../theme/theme";
 import { formatarValorMonetario } from "../../helpers/formatadores";
 import { desestruturarCompetencia } from "../../helpers/manipular-meses";
-import BaseCard from "../../components/BaseCard";
+import BaseCreditCard from "../../components/BaseCreditCard";
 import { getCardColor } from "../../helpers/cartao";
 
 type Props = RootStackScreenProps<"DetalhesMesScreen">;
@@ -14,8 +14,15 @@ type Props = RootStackScreenProps<"DetalhesMesScreen">;
 export default function DetalhesMesScreen({ route }: Props) {
   const competencia = route.params?.competencia;
   const data = desestruturarCompetencia(competencia);
-  const { gastos, faltaPagar, saldo, cartoes, isLoading } =
-    useDetalhesMesScreenViewModel({ competencia });
+  const {
+    gastos,
+    faltaPagar,
+    saldo,
+    cartoes,
+    isLoading,
+
+    irParaDetalhesCartao,
+  } = useDetalhesMesScreenViewModel({ competencia });
 
   return (
     <SafeScreen>
@@ -69,10 +76,11 @@ export default function DetalhesMesScreen({ route }: Props) {
           </View>
         </View>
         {cartoes.map((cartao) => (
-          <BaseCard
+          <BaseCreditCard
             key={cartao.id}
             cartaoInfo={cartao}
             backgroundColor={getCardColor(cartao.emissor)}
+            onPress={() => irParaDetalhesCartao(cartao.id, competencia)}
           />
         ))}
       </View>

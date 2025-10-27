@@ -1,24 +1,35 @@
 import React from "react";
-import { View, Text, StyleSheet, ViewStyle } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ViewStyle,
+  TouchableOpacity,
+} from "react-native";
 import Theme from "../../theme/theme";
 import Cartao from "../../database/model/Cartao";
 
-export type BaseCardProps = {
+export type BaseCreditCardProps = {
   cartaoInfo: Cartao;
   backgroundColor?: string;
   textColor?: string;
   style?: ViewStyle;
+  onPress?: () => void;
 };
 
-export default function BaseCard({
+export default function BaseCreditCard({
   cartaoInfo,
   backgroundColor = "#333",
   textColor = "#fff",
   style,
-}: BaseCardProps) {
+  onPress,
+}: BaseCreditCardProps) {
   const { nome, emissor, diaFechamento, diaVencimento } = cartaoInfo;
   return (
-    <View style={[styles.card, { backgroundColor }, style]}>
+    <TouchableOpacity
+      style={[styles.card, { backgroundColor }, style]}
+      onPress={onPress}
+    >
       <View>
         <Text style={[styles.nome, { color: textColor }]}>{nome}</Text>
         <Text style={[styles.emissor, { color: textColor }]}>{emissor}</Text>
@@ -37,7 +48,7 @@ export default function BaseCard({
           {diaVencimento}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

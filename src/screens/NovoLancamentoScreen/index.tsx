@@ -12,6 +12,7 @@ import SafeScreen from "../../components/SafeScreen";
 import Text from "../../components/Text";
 import useNovoLancamentoScreenViewModel from "./presentation/useNovoLancamentoScreenViewModel";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { Picker } from "@react-native-picker/picker";
 
 export default function NovoLancamentoScreen() {
   const {
@@ -27,6 +28,8 @@ export default function NovoLancamentoScreen() {
     onDateChange,
     showDatePicker,
     setShowDatePicker,
+
+    cartoes,
 
     onSubmit,
   } = useNovoLancamentoScreenViewModel();
@@ -104,6 +107,29 @@ export default function NovoLancamentoScreen() {
         >
           <Text>{data.toLocaleDateString("pt-BR")}</Text>
         </TouchableOpacity>
+
+        <Text style={styles.label}>Cartão</Text>
+        <Controller
+          control={control}
+          name="cartaoId"
+          render={({ field: { onChange, value } }) => (
+            <View style={[styles.input, { padding: 0 }]}>
+              <Picker selectedValue={value} onValueChange={onChange}>
+                <Picker.Item label="Selecione o cartão" value="" />
+                {cartoes.map((cartao) => (
+                  <Picker.Item
+                    key={cartao.id}
+                    label={cartao.nome}
+                    value={cartao.id}
+                  />
+                ))}
+              </Picker>
+            </View>
+          )}
+        />
+        {errors.cartaoId && (
+          <Text style={styles.error}>{errors.cartaoId.message}</Text>
+        )}
 
         <TouchableOpacity
           style={[styles.button, isSubmitting && { opacity: 0.7 }]}

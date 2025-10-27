@@ -6,6 +6,7 @@ import { lancamentoRepository } from "../../../repositories/LancamentoRepository
 import { calcularValorMes } from "../../../helpers/calculos";
 import Cartao from "../../../database/model/Cartao";
 import { cartaoRepository } from "../../../repositories/CartaoRepository";
+import { useTypedNavigation } from "../../../navigation/types";
 
 export type DetalhesMesScreenViewModelProps = {
   competencia: string;
@@ -14,6 +15,8 @@ export type DetalhesMesScreenViewModelProps = {
 export default function useDetalhesMesScreenViewModel({
   competencia,
 }: DetalhesMesScreenViewModelProps) {
+  const navigation = useTypedNavigation();
+
   const [detalhesMes, setDetalhesMes] = useState<{
     faltaPagar: number;
     saldo: number;
@@ -50,6 +53,10 @@ export default function useDetalhesMesScreenViewModel({
       setCartoes(cartoes);
       setLoading((prev) => ({ ...prev, cartoes: false }));
     } catch (error) {}
+  };
+
+  const irParaDetalhesCartao = (id: string, competencia: string) => {
+    navigation.navigate("DetalhesCartaoScreen", { id, competencia });
   };
 
   useEffect(() => {
@@ -92,5 +99,7 @@ export default function useDetalhesMesScreenViewModel({
     isLoading,
     ...detalhesMes,
     cartoes,
+
+    irParaDetalhesCartao,
   };
 }

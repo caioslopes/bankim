@@ -12,6 +12,10 @@ export type RootStackParamList = {
   DetalhesMesScreen: {
     competencia: string;
   };
+  DetalhesCartaoScreen: {
+    id: string;
+    competencia: string;
+  };
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> =

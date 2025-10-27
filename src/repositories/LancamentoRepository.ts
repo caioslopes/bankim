@@ -1,12 +1,17 @@
+import { Q } from "@nozbe/watermelondb";
 import { database, collections } from "../database";
 import { TipoMovimentoEnum } from "../database/model/enums/TipoMovimentoEnum";
+import { EstadoMovimentoEnum } from "../database/model/enums/EstadoMovimentoEnum";
 
 export type CreateLancamento = {
   descricao: string;
   tipoMovimento: TipoMovimentoEnum;
+  estadoMovimento: EstadoMovimentoEnum;
   valor: number;
   dataVencimento: Date;
   competencia: string;
+  cartaoId?: string;
+  fonteRecorrenteId?: string;
 };
 
 export type UpdateLancamento = Partial<CreateLancamento>;
@@ -22,10 +27,31 @@ class LancamentoRepository {
     return await this.lancamentoCollection.query().fetch();
   }
 
+  async getAllByCartaoIdAndCompetencia(cartaoId: string, competencia: string) {
+    return await this.lancamentoCollection
+      .query(
+        Q.where("cartao_id", cartaoId),
+        Q.where("competencia", competencia)
+      )
+      .fetch();
+  }
+
   async create(data: CreateLancamento) {
     return await database.write(async () => {
-      return await this.lancamentoCollection.create((fonte) => {
-        Object.assign(fonte, data);
+      return await this.lancamentoCollection.create((lancamento) => {
+        lancamento.descricao = data.descricao;
+        lancamento.tipoMovimento = data.tipoMovimento;
+        lancamento.valor = data.valor;
+        lancamento.dataVencimento = data.dataVencimento;
+        lancamento.competencia = data.competencia;
+
+        if (data.cartaoId) {
+          lancamento.cartaoId = data.cartaoId;
+        }
+
+        if (data.fonteRecorrenteId) {
+          lancamento.fonteRecorrenteId = data.fonteRecorrenteId;
+        }
       });
     });
   }
